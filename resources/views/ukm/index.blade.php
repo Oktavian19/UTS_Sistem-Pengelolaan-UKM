@@ -5,7 +5,9 @@
         <div class="card-header"> 
             <h3 class="card-title">{{ $page->title }}</h3> 
             <div class="card-tools"> 
-                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm bts-success mt-1">Tambah Ajax</button>
+                <a onclick="modalAction('{{ url('ukm/create') }}')" class="btn btn-block btn-info">
+                    <i class="fas fa-plus"></i>
+                </a>
             </div> 
         </div> 
         <div class="card-body"> 
@@ -83,7 +85,7 @@
                     // searchable: true, jika ingin kolom ini bisa dicari 
                     searchable: true     
                     },{ 
-                    data: "contact_person",                
+                    data: "category.name",                
                     className: "", 
                     orderable: true,     
                     searchable: true     

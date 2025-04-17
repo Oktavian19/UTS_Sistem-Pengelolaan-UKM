@@ -25,13 +25,14 @@ class UkmController extends Controller
     }
 
     public function list(Request $request){
-        $ukm = UkmModel::select('id', 'name', 'description', 'contact_person', 'email', 'phone', 'website', 'logo_path', 'status', 'created_by')
+        $ukm = UkmModel::select('id', 'name', 'description', 'category', 'email', 'phone', 'website', 'logo_path', 'is_active', 'created_by')
+                    ->with('category')
                     ->with('admins');
 
         // Filter data user berdasarkan level_id
-        // if ($request->level_id) {
-        //     $users->where('level_id', $request->level_id);
-        // }
+        if ($request->category) {
+            $ukm->where('category', $request->category);
+        }
 
         return DataTables::of($ukm)
             // Menambahkan kolom index/no urut (default nama kolo: DT_RowIndex)
@@ -47,5 +48,12 @@ class UkmController extends Controller
             }) 
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html 
             ->make(true); 
+    }
+
+    public function create() {
+        $admins = AdminsModel::select('id', 'name')->get();
+
+        return view('ukm.create')
+                    ->with('admins', $admins);
     }
 }

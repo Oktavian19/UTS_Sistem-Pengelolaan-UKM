@@ -14,38 +14,38 @@ class ukmSeeder extends Seeder
     {
         DB::table('ukm')->insert([
             [
-                'name' => 'UKM Musik Kampus',
-                'description' => 'Unit kegiatan mahasiswa yang fokus pada musik dan pertunjukan.',
-                'contact_person' => 'Andi Musik',
-                'email' => 'musik@ukm.ac.id',
-                'phone' => '081234567891',
-                'website' => 'https://ukmmusik.example.com',
-                'logo_path' => 'logos/ukm_musik.png',
-                'status' => 'active',
-                'created_by' => 1,
+                'name' => 'Seni Theatrisic',
+                'description' => 'UKM yang bergerak di bidang seni teater dan pertunjukan.',
+                'category' => 1, // ID dari tabel category, sesuaikan
+                'email' => 'theatrisic@ukm.com',
+                'phone' => '081234567890',
+                'website' => 'https://theatrisic.ukm.com',
+                'logo_path' => 'logos/theatrisic.png',
+                'is_active' => true,
+                'created_by' => 1 // ID dari tabel admin
             ],
             [
-                'name' => 'UKM Olahraga',
-                'description' => 'Mewadahi mahasiswa dalam kegiatan olahraga seperti futsal, basket, dll.',
-                'contact_person' => 'Budi Atlet',
-                'email' => 'olahraga@ukm.ac.id',
-                'phone' => '082345678912',
+                'name' => 'Usaha Mahasiswa',
+                'description' => 'UKM penggerak jiwa kewirausahaan di lingkungan kampus.',
+                'category' => 2,
+                'email' => 'usaha@ukm.com',
+                'phone' => '081298765432',
                 'website' => null,
                 'logo_path' => null,
-                'status' => 'active',
-                'created_by' => 2,
+                'is_active' => true,
+                'created_by' => 2
             ],
             [
-                'name' => 'UKM Bahasa dan Sastra',
-                'description' => 'Mempromosikan kegiatan linguistik, sastra dan diskusi budaya.',
-                'contact_person' => 'Citra Sastra',
-                'email' => 'sastra@ukm.ac.id',
-                'phone' => '083456789123',
-                'website' => 'https://ukmsastra.example.com',
-                'logo_path' => 'logos/ukm_sastra.png',
-                'status' => 'inactive',
-                'created_by' => 3,
-            ]
+                'name' => 'OPA Ganendra Giri',
+                'description' => 'UKM pencinta alam yang berfokus pada kegiatan luar ruangan.',
+                'category' => 5,
+                'email' => 'opa@ukm.com',
+                'phone' => '082112345678',
+                'website' => 'https://opa.ukm.com',
+                'logo_path' => 'logos/opa.png',
+                'is_active' => true,
+                'created_by' => 3
+            ],
         ]);
     }
 }

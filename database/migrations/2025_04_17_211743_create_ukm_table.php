@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name', 150);
             $table->text('description');
-            $table->string('contact_person', 100);
+            $table->foreignId('category')
+                  ->constrained('category')
+                  ->onDelete('cascade');
             $table->string('email', 100);
             $table->string('phone', 20);
             $table->string('website', 255)->nullable();
             $table->string('logo_path', 255)->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('is_active')->default(true);
             $table->foreignId('created_by')
                   ->constrained('admins')
                   ->onDelete('cascade');

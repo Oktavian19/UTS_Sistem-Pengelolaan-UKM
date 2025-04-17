@@ -16,12 +16,12 @@ class UkmModel extends Model
     protected $fillable = [
         'name',
         'description',
-        'contact_person',
+        'category',
         'email',
         'phone',
         'website',
         'logo_path',
-        'status',
+        'is_active',
         'created_by',
     ];
 
@@ -31,5 +31,10 @@ class UkmModel extends Model
     public function admins()
     {
         return $this->belongsTo(AdminsModel::class, 'created_by');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(CategoryModel::class, 'created_by');
     }
 }
