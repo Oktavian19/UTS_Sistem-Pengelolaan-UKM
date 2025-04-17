@@ -1,0 +1,115 @@
+@extends('layouts.template') 
+ 
+@section('content') 
+    <div class="card card-outline card-primary"> 
+        <div class="card-header"> 
+            <h3 class="card-title">{{ $page->title }}</h3> 
+            <div class="card-tools"> 
+                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm bts-success mt-1">Tambah Ajax</button>
+            </div> 
+        </div> 
+        <div class="card-body"> 
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label for="" class="col-1 control-label col-form-label">Filter:</label>
+                        <div class="col-3">
+                            <select id="level_id" class="form-control" nama="level_id" required>
+                                <option value="">- Semua -</option>
+                                {{-- @foreach ($level as $item)
+                                    <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
+                                @endforeach --}}
+                            </select>
+                            <small class="form-text text-muted">Level Pengguna</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_ukm"> 
+            <thead> 
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Kontak Person</th>
+                    <th>Email</th>
+                    <th>Kontak</th>
+                    <th>Aksi</th>
+                </tr> 
+            </thead> 
+        </table> 
+        </div> 
+    </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div> 
+@endsection 
+ 
+@push('css') 
+@endpush 
+ 
+@push('js') 
+    <script> 
+        function modalAction(url = ''){ 
+            $('#myModal').load(url,function(){ 
+                $('#myModal').modal('show'); 
+            }); 
+        }
+
+        var dataUser;
+        $(document).ready(function() { 
+            dataUser = $('#table_ukm').DataTable({ 
+                // serverSide: true, jika ingin menggunakan server side processing 
+                serverSide: true,      
+                ajax: { 
+                    "url": "{{ url('ukm/list') }}", 
+                    "dataType": "json", 
+                    "type": "POST" ,
+                }, 
+                columns: [ 
+                    { 
+                    data: "DT_RowIndex",             
+                    className: "text-center", 
+                    orderable: false, 
+                    searchable: false     
+                    },{ 
+                    data: "name",                
+                    className: "", 
+                    // orderable: true, jika ingin kolom ini bisa diurutkan  
+                    orderable: true,     
+                    // searchable: true, jika ingin kolom ini bisa dicari 
+                    searchable: true     
+                    },{ 
+                    data: "contact_person",                
+                    className: "", 
+                    orderable: true,     
+                    searchable: true     
+                    },{ 
+                    // mengambil data level hasil dari ORM berelasi 
+                    data: "email",                
+                    className: "", 
+                    orderable: false,     
+                    searchable: false     
+                    },{ 
+                    data: "phone",                
+                    className: "", 
+                    orderable: false,     
+                    searchable: false     
+                    },{ 
+                    data: "aksi",                
+                    className: "", 
+                    orderable: false,     
+                    searchable: false     
+                    } 
+                ] 
+            });
+            
+            $('#created_by').on('change', function () {
+                dataUser.ajax.reload();
+            });
+        }); 
+    </script> 
+@endpush  

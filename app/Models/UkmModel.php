@@ -28,7 +28,7 @@ class UkmModel extends Model
     /**
      * Relasi: UKM dimiliki oleh satu Admin
      */
-    public function admin()
+    public function admins()
     {
         return $this->belongsTo(AdminsModel::class, 'created_by');
     }
