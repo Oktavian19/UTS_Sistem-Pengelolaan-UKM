@@ -66,13 +66,13 @@ class UkmController extends Controller
     public function store(Request $request) {
         // cek apakah request berupa ajax
         $request->validate([
-            'name' => 'required|string|max:150',
-            'description' => 'required|string|min:50',
-            'category_id' => 'required|exists:category,id',
-            'email' => 'required|email|max:100',
-            'phone' => 'required|max:20',
-            'website' => 'nullable|url',
-            'logo_ukm' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'name'          => 'required|string|max:150',
+            'description'   => 'required|string|min:50',
+            'category_id'   => 'required|exists:category,id',
+            'email'         => 'required|email|max:100',
+            'phone'         => 'required|max:20',
+            'website'       => 'nullable|url',
+            'logo_ukm'      => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $path = null;
@@ -106,5 +106,52 @@ class UkmController extends Controller
         $ukmAdmin = UkmAdminModel::where('ukm_id', $id)->get();
 
         return view('ukm.show', ['ukm' => $ukm, 'ukmAdmin' => $ukmAdmin]);
+    }
+
+    public function edit(string $id) {
+        $ukm = UkmModel::find($id);
+        $category = CategoryModel::select('id', 'name')->get();
+
+        return view('ukm.edit', ['ukm' => $ukm, 'category' => $category]);
+    }
+
+    public function update(Request $request, $id) {
+        //cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'name'          => 'required|string|max:150',
+                'description'   => 'required|string|min:50',
+                'category_id'   => 'required|exists:category,id',
+                'email'         => 'required|email|max:100',
+                'phone'         => 'required|max:20',
+                'website'       => 'nullable|url',
+                'logo_ukm'      => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            ];
+            // use Illuminate\Support\Facades\Validator; 
+            $validator = Validator::make($request->all(), $rules); 
+    
+            if ($validator->fails()) { 
+                return response()->json([ 
+                    'status'   => false,    // respon json, true: berhasil, false: gagal 
+                    'message'  => 'Validasi gagal.', 
+                    'msgField' => $validator->errors()  // menunjukkan field mana yang error 
+                ]); 
+            }
+    
+            $check = UkmModel::find($id); 
+            if ($check) { 
+                $check->update($request->all()); 
+                return response()->json([ 
+                    'status'  => true, 
+                    'message' => 'Data berhasil diupdate' 
+                ]); 
+            } else{ 
+                return response()->json([ 
+                    'status'  => false, 
+                    'message' => 'Data tidak ditemukan' 
+                ]); 
+            } 
+        } 
+        return redirect('/'); 
     }
 }
