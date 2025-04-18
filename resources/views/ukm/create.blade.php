@@ -40,7 +40,7 @@
                 </div>
                 <div class="form-group">
                     <label for="website">Website</label>
-                    <input type="text" name="website" id="website" class="form-control" minlength="5" maxlength="50">
+                    <input type="url" name="website" id="website" class="form-control" minlength="5" maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="logo_ukm">Logo UKM</label>
@@ -60,6 +60,19 @@
     </div> 
 </form> 
 <script> 
+    document.getElementById('logo_ukm').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
+        const errorText = document.getElementById('logoUkmError');
+
+        if (file && file.size > maxSize) {
+            errorText.classList.remove('d-none');
+            e.target.value = ''; // Reset input jika file terlalu besar
+        } else {
+            errorText.classList.add('d-none');
+        }
+    });
+
     $(document).ready(function() { 
         $("#form-tambah").validate({ 
             rules: { 

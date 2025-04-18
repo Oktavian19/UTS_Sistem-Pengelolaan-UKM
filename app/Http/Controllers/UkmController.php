@@ -154,4 +154,32 @@ class UkmController extends Controller
         } 
         return redirect('/'); 
     }
+
+    public function confirm(string $id) {
+        $ukm = UkmModel::find($id);
+        $ukmAdmin = UkmAdminModel::where('ukm_id', $id)->get();
+
+        return view('ukm.confirm', ['ukm' => $ukm, 'ukmAdmin' => $ukmAdmin]);
+    }
+
+    public function delete(Request $request, $id) {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $ukm = UkmModel::find($id);
+
+            if ($ukm) {
+                $ukm->delete();
+                return response()->json([
+                    'status'    =>  true,
+                    'message'   =>  'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status'    =>  false,
+                    'message'   =>  'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 }

@@ -58,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label for="website">Website</label>
-                        <input type="text" name="website" id="website" class="form-control" minlength="5" maxlength="50" value="{{ $ukm->website }}">
+                        <input type="url" name="website" id="website" class="form-control" minlength="5" maxlength="50" value="{{ $ukm->website }}">
                     </div>
                     <div class="form-group">
                         <label for="logo_ukm">Logo UKM</label>
@@ -88,6 +88,19 @@
         // Format angka dengan spasi setiap 3 digit dari kanan untuk tampilan
         input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     }
+
+    document.getElementById('logo_ukm').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
+    const errorText = document.getElementById('logoUkmError');
+
+    if (file && file.size > maxSize) {
+        errorText.classList.remove('d-none');
+        e.target.value = ''; // Reset input jika file terlalu besar
+    } else {
+        errorText.classList.add('d-none');
+    }
+});
     
     $(document).ready(function() { 
         $("#form-edit").validate({ 

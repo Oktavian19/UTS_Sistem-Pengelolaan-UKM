@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('phone', 20);
             $table->string('website', 255)->nullable();
-            $table->string('logo_path', 255)->nullable();
+            $table->string('logo_path', 255)->default('logos/logo-poltek.png');
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by')
                   ->constrained('admins')

@@ -14,4 +14,6 @@ Route::group(['prefix' => 'ukm'], function() {
     Route::get('/{id}', [UkmController::class, 'show']);
     Route::get('/{id}/edit', [UkmController::class, 'edit']);
     Route::put('/{id}', [UkmController::class, 'update']);
+    Route::get('/{id}/delete', [UkmController::class, 'confirm']); 
+    Route::delete('/{id}/delete', [UkmController::class, 'delete']);
 });
