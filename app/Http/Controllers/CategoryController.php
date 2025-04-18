@@ -74,17 +74,38 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $request->validate([
-            'name' => 'required|string',
-            'description'     => 'required|string'
-        ]);
-
-        CategoryModel::find($id)->update([
-            'name'          => $request->name,
-            'description'   => $request->description
-        ]);
-
-        return redirect('/category')->with('success', 'Data Kategori berhasil diubah');
+        //cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'name'          => 'required|string',
+                'description'   => 'required|string',
+            ];
+            // use Illuminate\Support\Facades\Validator; 
+            $validator = Validator::make($request->all(), $rules); 
+    
+            if ($validator->fails()) { 
+                return response()->json([ 
+                    'status'   => false,    // respon json, true: berhasil, false: gagal 
+                    'message'  => 'Validasi gagal.', 
+                    'msgField' => $validator->errors()  // menunjukkan field mana yang error 
+                ]); 
+            }
+    
+            $check = CategoryModel::find($id); 
+            if ($check) { 
+                $check->update($request->all()); 
+                return response()->json([ 
+                    'status'  => true, 
+                    'message' => 'Data berhasil diupdate' 
+                ]); 
+            } else{ 
+                return response()->json([ 
+                    'status'  => false, 
+                    'message' => 'Data tidak ditemukan' 
+                ]); 
+            } 
+        } 
+        return redirect('/'); 
     }
 
     public function confirm(string $id) {

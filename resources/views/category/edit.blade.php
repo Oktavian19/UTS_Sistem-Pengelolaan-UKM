@@ -42,47 +42,18 @@
         </div> 
     </form> 
 <script>
-    function formatNumber(input, hiddenInputId) {
-        // Hapus semua karakter non-digit
-        let value = input.value.replace(/\D/g, '');
-
-        // Simpan nilai integer asli ke hidden input
-        document.getElementById(hiddenInputId).value = value;
-
-        // Format angka dengan spasi setiap 3 digit dari kanan untuk tampilan
-        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
-
-    document.getElementById('logo_ukm').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
-    const errorText = document.getElementById('logoUkmError');
-
-    if (file && file.size > maxSize) {
-        errorText.classList.remove('d-none');
-        e.target.value = ''; // Reset input jika file terlalu besar
-    } else {
-        errorText.classList.add('d-none');
-    }
-});
-    
     $(document).ready(function() { 
         $("#form-edit").validate({ 
             rules: {
-                name: {required: true, maxlength: 150}, 
-                description: {required: true, minlength: 50}, 
-                category_id: {required: true}, 
-                email: {required: true, maxlength: 100},
-                phone: {required: true, maxlength: 20},
+                name: {required: true}, 
+                description: {required: true},
             },
             submitHandler: function(form) { 
                 let formData = new FormData(form);
                 $.ajax({ 
                     url: form.action, 
                     type: form.method, 
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                    data: $(form).serialize(),
                     success: function(response) { 
                         if(response.status){ 
                             $('#myModal').modal('hide'); 
@@ -91,7 +62,7 @@
                                 title: 'Berhasil', 
                                 text: response.message 
                             }); 
-                            dataUkm.ajax.reload(); 
+                            dataCategory.ajax.reload(); 
                         }else{ 
                             $('.error-text').text(''); 
                             $.each(response.msgField, function(prefix, val) { 
@@ -120,14 +91,5 @@
             } 
         }); 
     });
-
-    function formatNumber(input, hiddenInputId) {
-        // Hapus semua karakter non-digit
-        let value = input.value.replace(/\D/g, '');
-
-        input.value = value;
-        // Simpan nilai integer asli ke hidden input
-        document.getElementById(hiddenInputId).value = value;
-    }
 </script> 
 @endempty 
