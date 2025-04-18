@@ -16,7 +16,7 @@ class UkmModel extends Model
     protected $fillable = [
         'name',
         'description',
-        'category',
+        'category_id',
         'email',
         'phone',
         'website',
@@ -35,6 +35,7 @@ class UkmModel extends Model
 
     public function category()
     {
-        return $this->belongsTo(CategoryModel::class, 'category');
+        return $this->belongsTo(CategoryModel::class);
     }
+
 }

@@ -16,7 +16,7 @@ class ukmSeeder extends Seeder
             [
                 'name' => 'Seni Theatrisic',
                 'description' => 'UKM yang bergerak di bidang seni teater dan pertunjukan.',
-                'category' => 1, // ID dari tabel category, sesuaikan
+                'category_id' => 1, // ID dari tabel category_id, sesuaikan
                 'email' => 'theatrisic@ukm.com',
                 'phone' => '081234567890',
                 'website' => 'https://theatrisic.ukm.com',
@@ -27,7 +27,7 @@ class ukmSeeder extends Seeder
             [
                 'name' => 'Usaha Mahasiswa',
                 'description' => 'UKM penggerak jiwa kewirausahaan di lingkungan kampus.',
-                'category' => 2,
+                'category_id' => 2,
                 'email' => 'usaha@ukm.com',
                 'phone' => '081298765432',
                 'website' => null,
@@ -38,7 +38,7 @@ class ukmSeeder extends Seeder
             [
                 'name' => 'OPA Ganendra Giri',
                 'description' => 'UKM pencinta alam yang berfokus pada kegiatan luar ruangan.',
-                'category' => 5,
+                'category_id' => 5,
                 'email' => 'opa@ukm.com',
                 'phone' => '082112345678',
                 'website' => 'https://opa.ukm.com',

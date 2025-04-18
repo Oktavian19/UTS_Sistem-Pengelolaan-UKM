@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminsModel;
 use App\Models\CategoryModel;
+use App\Models\UkmAdminModel;
 use App\Models\UkmModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,7 @@ class UkmController extends Controller
     }
 
     public function list(Request $request){
-        $ukm = UkmModel::select('id', 'name', 'description', 'category', 'email', 'phone', 'website', 'logo_path', 'is_active', 'created_by')
+        $ukm = UkmModel::select('id', 'name', 'description', 'category_id', 'email', 'phone', 'website', 'logo_path', 'is_active', 'created_by')
                     ->with('category')
                     ->with('admins');
 
@@ -44,9 +45,9 @@ class UkmController extends Controller
                 // $btn  = '<a href="'.url('/ukm/' . $ukm->ukm_id).'" class="btn btn-info btn-sm">Detail</a> '; 
                 // $btn .= '<a href="'.url('/ukm/' . $ukm->ukm_id . '/edit').'" class="btn btn-warning btn-sm">Edit</a> '; 
                 // $btn .= '<form class="d-inline-block" method="POST" action="'.url('/ukm/'.$ukm->ukm_id).'">' . csrf_field() . method_field('DELETE') . '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakit menghapus data ini?\');">Hapus</button></form>';
-                $btn  = '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id . '/delete_ajax').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id).'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id . '/edit').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/ukm/' . $ukm->id . '/delete').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
                 return $btn; 
             }) 
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html 
@@ -67,7 +68,7 @@ class UkmController extends Controller
         $request->validate([
             'name' => 'required|string|max:150',
             'description' => 'required|string|min:50',
-            'category' => 'required|exists:category,id',
+            'category_id' => 'required|exists:category,id',
             'email' => 'required|email|max:100',
             'phone' => 'required|max:20',
             'website' => 'nullable|url',
@@ -78,12 +79,12 @@ class UkmController extends Controller
 
         if ($request->hasFile('logo_ukm')) {
              // Simpan ke folder storage/app/logos
-            $path = $request->file('logo_ukm')->store('logos');
+            $path = $request->file('logo_ukm')->store('logos', 'public');
         }
         UkmModel::create([
             'name' => $request->name,
             'description' => $request->description,
-            'category' => $request->category,
+            'category_id' => $request->category_id,
             'email' => $request->email,
             'phone' => $request->phone,
             'website' => $request->website,
@@ -98,5 +99,12 @@ class UkmController extends Controller
         ]);
 
         redirect('/');
+    }
+
+    public function show($id) {
+        $ukm = UkmModel::with('category')->find($id);
+        $ukmAdmin = UkmAdminModel::where('ukm_id', $id)->get();
+
+        return view('ukm.show', ['ukm' => $ukm, 'ukmAdmin' => $ukmAdmin]);
     }
 }

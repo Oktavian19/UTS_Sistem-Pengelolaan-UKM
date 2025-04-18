@@ -10,5 +10,6 @@ Route::group(['prefix' => 'ukm'], function() {
     Route::get('/', [UkmController::class, 'index']);
     Route::post('/list', [UkmController::class, 'list']);
     Route::get('/create', [UkmController::class, 'create']);
-    Route::post('/', [UkmController::class, 'store']);   
+    Route::post('/', [UkmController::class, 'store']);
+    Route::get('/{id}', [UkmController::class, 'show']);
 });

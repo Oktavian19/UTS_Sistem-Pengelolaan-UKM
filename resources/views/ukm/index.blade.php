@@ -22,13 +22,13 @@
                     <div class="form-group row">
                         <label for="" class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
-                            <select id="level_id" class="form-control" nama="level_id" required>
+                            <select id="category" class="form-control" nama="category" required>
                                 <option value="">- Semua -</option>
-                                {{-- @foreach ($level as $item)
-                                    <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
-                                @endforeach --}}
+                                @foreach ($category as $item)
+                                    <option value="{{ $item->category }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
-                            <small class="form-text text-muted">Level Pengguna</small>
+                            <small class="form-text text-muted">Kategori</small>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
-                    <th>Kontak Person</th>
+                    <th>Kategori</th>
                     <th>Email</th>
                     <th>Kontak</th>
                     <th>Aksi</th>
@@ -61,9 +61,9 @@
             }); 
         }
 
-        var dataUser;
+        var dataUkm;
         $(document).ready(function() { 
-            dataUser = $('#table_ukm').DataTable({ 
+            dataUkm = $('#table_ukm').DataTable({ 
                 // serverSide: true, jika ingin menggunakan server side processing 
                 serverSide: true,      
                 ajax: { 

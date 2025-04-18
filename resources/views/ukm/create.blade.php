@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label>Kategori</label> 
-                    <select name="category" id="category" class="form-control" required> 
+                    <select name="category_id" id="category_id" class="form-control" required> 
                         <option value="">- Pilih Kategori -</option> 
                         @foreach($category as $c) 
                             <option value="{{ $c->id }}">{{ $c->name }}</option> 
@@ -65,7 +65,7 @@
             rules: { 
                 name: {required: true, maxlength: 150}, 
                 description: {required: true, minlength: 50}, 
-                category: {required: true}, 
+                category_id: {required: true}, 
                 email: {required: true, maxlength: 100},
                 phone: {required: true, maxlength: 20},
             }, 
@@ -85,7 +85,7 @@
                                 title: 'Berhasil', 
                                 text: response.message 
                             }); 
-                            dataUser.ajax.reload(); 
+                            dataUkm.ajax.reload(); 
                         }else{ 
                             $('.error-text').text(''); 
                             $.each(response.msgField, function(prefix, val) { 
