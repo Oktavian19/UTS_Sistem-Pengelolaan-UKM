@@ -35,6 +35,6 @@ class UkmModel extends Model
 
     public function category()
     {
-        return $this->belongsTo(CategoryModel::class, 'created_by');
+        return $this->belongsTo(CategoryModel::class, 'category');
     }
 }

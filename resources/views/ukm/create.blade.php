@@ -1,4 +1,4 @@
-<form action="{{ url('/ukm/ajax') }}" method="POST" id="form-tambah"> 
+<form action="{{ url('/ukm') }}" method="POST" id="form-tambah"> 
     @csrf 
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
@@ -12,37 +12,44 @@
             <div class="modal-body"> 
                 <div class="form-group">
                     <label for="name">Nama UKM</label>
-                    <input type="text" id="name" class="form-control">
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Deskripsi UKM</label>
-                    <textarea id="description" class="form-control" rows="4"></textarea>
-                </div>
-                <select name="category" id="category" class="form-control" required> 
-                    <option value="">- Pilih Kategori -</option> 
-                    @foreach($category as $c) 
-                        <option value="{{ $c->id }}">{{ $c->name }}</option> 
-                    @endforeach 
-                </select>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" class="form-control">
+                    <textarea id="description" name="description" class="form-control" rows="4" minlength="50" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="inputStatus">Status</label>
-                    <select id="inputStatus" class="form-control custom-select">
-                        <option selected disabled>Select one</option>
-                        <option>On Hold</option>
-                        <option>Canceled</option>
+                    <label>Kategori</label> 
+                    <select name="category" id="category" class="form-control" required> 
+                        <option value="">- Pilih Kategori -</option> 
+                        @foreach($category as $c) 
+                            <option value="{{ $c->id }}">{{ $c->name }}</option> 
+                        @endforeach 
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="inputClientCompany">Client Company</label>
-                    <input type="text" id="inputClientCompany" class="form-control">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" maxlength="50" required>
                 </div>
                 <div class="form-group">
-                    <label for="inputProjectLeader">Project Leader</label>
-                    <input type="text" id="inputProjectLeader" class="form-control">
+                    <label>Nomor Telepon</label> 
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="display_phone" value="{{ old('phone') }}" required oninput="formatNumber(this, 'phone')">
+                        <input type="hidden" name="phone" id="phone" value="{{ old('phone') }}"> 
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="text" name="website" id="website" class="form-control" minlength="5" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="logo_ukm">Logo UKM</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="logo_ukm" name="logo_ukm" accept="image/*">
+                        <label class="custom-file-label" for="logo_ukm">Pilih File</label>
+                      </div>
+                    </div>
                 </div>
             </div> 
             <div class="modal-footer"> 
@@ -56,16 +63,20 @@
     $(document).ready(function() { 
         $("#form-tambah").validate({ 
             rules: { 
-                level_id: {required: true, number: true}, 
-                username: {required: true, minlength: 3, maxlength: 20}, 
-                nama: {required: true, minlength: 3, maxlength: 100}, 
-                password: {required: true, minlength: 6, maxlength: 20} 
+                name: {required: true, maxlength: 150}, 
+                description: {required: true, minlength: 50}, 
+                category: {required: true}, 
+                email: {required: true, maxlength: 100},
+                phone: {required: true, maxlength: 20},
             }, 
             submitHandler: function(form) { 
+                let formData = new FormData(form);
                 $.ajax({ 
                     url: form.action, 
                     type: form.method, 
-                    data: $(form).serialize(), 
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) { 
                         if(response.status){ 
                             $('#myModal').modal('hide'); 
@@ -102,5 +113,21 @@
                 $(element).removeClass('is-invalid'); 
             } 
         }); 
-    }); 
+
+        $('#logo_ukm').on('change', function () {
+            // Ambil nama file yang dipilih
+            var fileName = $(this).val().split('\\').pop();
+            // Update label-nya
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+
+    function formatNumber(input, hiddenInputId) {
+        // Hapus semua karakter non-digit
+        let value = input.value.replace(/\D/g, '');
+
+        input.value = value;
+        // Simpan nilai integer asli ke hidden input
+        document.getElementById(hiddenInputId).value = value;
+    }
 </script> 

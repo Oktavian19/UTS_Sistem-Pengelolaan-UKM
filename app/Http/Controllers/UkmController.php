@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminsModel;
+use App\Models\CategoryModel;
 use App\Models\UkmModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class UkmController extends Controller
@@ -19,9 +21,10 @@ class UkmController extends Controller
             'title' => 'Daftar UKM yang terdaftar pada sistem'
         ];
 
+        $category = CategoryModel::all();
         $admins = AdminsModel::all();
 
-        return view('ukm.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'admins' => $admins]);
+        return view('ukm.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'admins' => $admins, 'category' => $category]);
     }
 
     public function list(Request $request){
@@ -52,8 +55,48 @@ class UkmController extends Controller
 
     public function create() {
         $admins = AdminsModel::select('id', 'name')->get();
+        $category = CategoryModel::select('id', 'name')->get();
 
         return view('ukm.create')
-                    ->with('admins', $admins);
+                    ->with('admins', $admins)
+                    ->with('category', $category);
+    }
+
+    public function store(Request $request) {
+        // cek apakah request berupa ajax
+        $request->validate([
+            'name' => 'required|string|max:150',
+            'description' => 'required|string|min:50',
+            'category' => 'required|exists:category,id',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|max:20',
+            'website' => 'nullable|url',
+            'logo_ukm' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $path = null;
+
+        if ($request->hasFile('logo_ukm')) {
+             // Simpan ke folder storage/app/logos
+            $path = $request->file('logo_ukm')->store('logos');
+        }
+        UkmModel::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'category' => $request->category,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'website' => $request->website,
+            'logo_path' => $path,
+            'created_by' => '1', // atau ID admin yang sesuai
+            'is_active' => true,
+        ]);
+
+        return response()->json([
+            'status'    =>  true,
+            'message'   =>  'Data user berhasil disimpan'
+        ]);
+
+        redirect('/');
     }
 }
