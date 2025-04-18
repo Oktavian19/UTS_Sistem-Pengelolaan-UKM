@@ -22,10 +22,10 @@
                     <div class="form-group row">
                         <label for="" class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
-                            <select id="category" class="form-control" nama="category" required>
+                            <select id="category_id" class="form-control" name="category_id" required>
                                 <option value="">- Semua -</option>
                                 @foreach ($category as $item)
-                                    <option value="{{ $item->category }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <small class="form-text text-muted">Kategori</small>
@@ -70,6 +70,9 @@
                     "url": "{{ url('ukm/list') }}", 
                     "dataType": "json", 
                     "type": "POST" ,
+                    "data": function (d) {
+                        d.category_id = $('#category_id').val();
+                    }
                 }, 
                 columns: [ 
                     { 
@@ -109,8 +112,8 @@
                 ] 
             });
             
-            $('#created_by').on('change', function () {
-                dataUser.ajax.reload();
+            $('#category_id').on('change', function () {
+                dataUkm.ajax.reload();
             });
         }); 
     </script> 

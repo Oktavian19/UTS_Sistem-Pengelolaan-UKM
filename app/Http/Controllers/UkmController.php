@@ -33,9 +33,9 @@ class UkmController extends Controller
                     ->with('category')
                     ->with('admins');
 
-        // Filter data user berdasarkan level_id
-        if ($request->category) {
-            $ukm->where('category', $request->category);
+        // Filter data user berdasarkan category_id
+        if ($request->category_id) {
+            $ukm->where('category_id', $request->category_id);
         }
 
         return DataTables::of($ukm)
