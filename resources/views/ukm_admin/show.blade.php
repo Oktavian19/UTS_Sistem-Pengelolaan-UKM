@@ -9,12 +9,12 @@
                 <div class="alert alert-danger"> 
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5> 
                     Data yang anda cari tidak ditemukan</div> 
-                <a href="{{ url('/admin/ukm') }}" class="btn btn-warning">Kembali</a> 
+                <a href="{{ url('/ukm/admin') }}" class="btn btn-warning">Kembali</a> 
             </div> 
         </div> 
     </div> 
 @else
-    <form action="{{ url('/admin/ukm/' . $ukmAdmin->id) }}" method="POST" id="form-show"> 
+    <form action="{{ url('/ukm/admin/' . $ukmAdmin->nim) }}" method="POST" id="form-show"> 
     @csrf 
     @method('POST')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">

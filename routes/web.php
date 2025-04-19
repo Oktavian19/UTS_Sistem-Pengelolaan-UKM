@@ -19,11 +19,11 @@ Route::group(['prefix' => 'ukm'], function() {
         Route::post('/list', [UkmAdminController::class, 'list']);
         Route::get('/create', [UkmAdminController::class, 'create']);
         Route::post('/', [UkmAdminController::class, 'store']);
-        Route::get('/{id}', [UkmAdminController::class, 'show']);
-        Route::get('/{id}/edit', [UkmAdminController::class, 'edit']);
-        Route::put('/{id}', [UkmAdminController::class, 'update']);
-        Route::get('/{id}/delete', [UkmAdminController::class, 'confirm']); 
-        Route::delete('/{id}/delete', [UkmAdminController::class, 'delete']);
+        Route::get('/{nim}', [UkmAdminController::class, 'show']);
+        Route::get('/{nim}/edit', [UkmAdminController::class, 'edit']);
+        Route::put('/{nim}', [UkmAdminController::class, 'update']);
+        Route::get('/{nim}/delete', [UkmAdminController::class, 'confirm']); 
+        Route::delete('/{nim}/delete', [UkmAdminController::class, 'delete']);
     });
     Route::get('/{id}', [UkmController::class, 'show']);
     Route::get('/{id}/edit', [UkmController::class, 'edit']);
