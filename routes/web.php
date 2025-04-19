@@ -45,6 +45,18 @@ Route::group(['prefix' => 'category'], function() {
     Route::delete('/{id}/delete', [CategoryController::class, 'delete']);
 });
 
+Route::group(['prefix' => 'admin/ukm'], function() {  
+    Route::get('/', [UkmAdminController::class, 'index']);
+    Route::post('/list', [UkmAdminController::class, 'list']);
+    Route::get('/create', [UkmAdminController::class, 'create']);
+    Route::post('/', [UkmAdminController::class, 'store']);
+    Route::get('/{id}', [UkmAdminController::class, 'show']);
+    Route::get('/{id}/edit', [UkmAdminController::class, 'edit']);
+    Route::put('/{id}', [UkmAdminController::class, 'update']);
+    Route::get('/{id}/delete', [UkmAdminController::class, 'confirm']); 
+    Route::delete('/{id}/delete', [UkmAdminController::class, 'delete']);
+});
+
 Route::group(['prefix' => 'admin'], function() {  
     Route::get('/', [AdminsController::class, 'index']);
     Route::post('/list', [AdminsController::class, 'list']);
@@ -55,4 +67,16 @@ Route::group(['prefix' => 'admin'], function() {
     Route::put('/{id}', [AdminsController::class, 'update']);
     Route::get('/{id}/delete', [AdminsController::class, 'confirm']); 
     Route::delete('/{id}/delete', [AdminsController::class, 'delete']);
+
+    Route::group(['prefix' => 'ukm'], function() {  
+        Route::get('/', [UkmAdminController::class, 'index']);
+        Route::post('/list', [UkmAdminController::class, 'list']);
+        Route::get('/create', [UkmAdminController::class, 'create']);
+        Route::post('/', [UkmAdminController::class, 'store']);
+        Route::get('/{id}', [UkmAdminController::class, 'show']);
+        Route::get('/{id}/edit', [UkmAdminController::class, 'edit']);
+        Route::put('/{id}', [UkmAdminController::class, 'update']);
+        Route::get('/{id}/delete', [UkmAdminController::class, 'confirm']); 
+        Route::delete('/{id}/delete', [UkmAdminController::class, 'delete']);
+    });
 });
