@@ -37,12 +37,18 @@ class UkmAdminController extends Controller
             // Menambahkan kolom index/no urut (default nama kolo: DT_RowIndex)
             ->addIndexColumn()
             ->addColumn('aksi', function ($ukmAdmin) {  // menambahkan kolom aksi 
-                $btn  = '<button onclick="modalAction(\''.url('/admin/ukm/' . $ukmAdmin->id).'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/admin/ukm/' . $ukmAdmin->id . '/edit').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/admin/ukm/' . $ukmAdmin->id . '/delete').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/ukm/admin/' . $ukmAdmin->id).'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/ukm/admin/' . $ukmAdmin->id . '/edit').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/ukm/admin/' . $ukmAdmin->id . '/delete').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
                 return $btn; 
             }) 
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html 
             ->make(true); 
+    }
+
+    public function show($id) {
+        $ukmAdmin = UkmAdminModel::with('ukm')->find($id);
+
+        return view('ukm_admin.show', ['ukmAdmin' => $ukmAdmin]);
     }
 }

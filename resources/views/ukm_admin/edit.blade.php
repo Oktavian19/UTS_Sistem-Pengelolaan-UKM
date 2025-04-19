@@ -1,4 +1,4 @@
-@empty($ukm)
+@empty($ukmAdmin)
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
             <div class="modal-header"> 
@@ -10,12 +10,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5> 
                     Data yang anda cari tidak ditemukan
                 </div> 
-                <a href="{{ url('/ukm') }}" class="btn btn-warning">Kembali</a> 
+                <a href="{{ url('/admin/ukm') }}" class="btn btn-warning">Kembali</a> 
             </div> 
         </div> 
     </div> 
 @else 
-    <form action="{{ url('/ukm/' . $ukm->id) }}" method="POST" id="form-edit"> 
+    <form action="{{ url('/admin/ukm/' . $ukmAdmin->id) }}" method="POST" id="form-edit"> 
         @csrf 
         @method('PUT') 
         <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
@@ -26,7 +26,7 @@
                 </div> 
                 <div class="modal-body"> 
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/' . $ukm->logo_path) }}" alt="Logo UKM" style="height: 200px; width: 200px;">
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/' . $ukmAdmin->logo_path) }}" alt="Logo UKM" style="height: 200px; width: 200px;">
                     </div>
                     <div class="form-group">
                         <label for="name">Nama UKM</label>

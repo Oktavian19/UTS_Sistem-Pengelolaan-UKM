@@ -5,7 +5,7 @@
         <div class="card-header"> 
             <h3 class="card-title">{{ $page->title }}</h3> 
             <div class="card-tools"> 
-                <a onclick="modalAction('{{ url('admin/ukm/create') }}')" class="btn btn-block btn-info">
+                <a onclick="modalAction('{{ url('ukm/admin/create') }}')" class="btn btn-block btn-info">
                     <i class="fas fa-plus"></i>
                 </a>
             </div> 
@@ -68,7 +68,7 @@
                 // serverSide: true, jika ingin menggunakan server side processing 
                 serverSide: true,      
                 ajax: { 
-                    "url": "{{ url('admin/ukm/list') }}", 
+                    "url": "{{ url('ukm/admin/list') }}", 
                     "dataType": "json", 
                     "type": "POST" ,
                     "data": function (d) {

@@ -102,14 +102,14 @@ class UkmController extends Controller
     }
 
     public function show($id) {
-        $ukm = UkmModel::with('category')->find($id);
+        $ukm = UkmModel::with('category')->findOrFail($id);
         $ukmAdmin = UkmAdminModel::where('ukm_id', $id)->get();
 
         return view('ukm.show', ['ukm' => $ukm, 'ukmAdmin' => $ukmAdmin]);
     }
 
     public function edit(string $id) {
-        $ukm = UkmModel::find($id);
+        $ukm = UkmModel::findOrFail($id);
         $category = CategoryModel::select('id', 'name')->get();
 
         return view('ukm.edit', ['ukm' => $ukm, 'category' => $category]);
@@ -138,7 +138,7 @@ class UkmController extends Controller
                 ]); 
             }
     
-            $check = UkmModel::find($id); 
+            $check = UkmModel::findOrFail($id); 
             if ($check) { 
                 $check->update($request->all()); 
                 return response()->json([ 
@@ -156,7 +156,7 @@ class UkmController extends Controller
     }
 
     public function confirm(string $id) {
-        $ukm = UkmModel::find($id);
+        $ukm = UkmModel::findOrFail($id);
         $ukmAdmin = UkmAdminModel::where('ukm_id', $id)->get();
 
         return view('ukm.confirm', ['ukm' => $ukm, 'ukmAdmin' => $ukmAdmin]);
@@ -165,7 +165,7 @@ class UkmController extends Controller
     public function delete(Request $request, $id) {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
-            $ukm = UkmModel::find($id);
+            $ukm = UkmModel::findOrFail($id);
 
             if ($ukm) {
                 $ukm->delete();
