@@ -54,42 +54,53 @@ class UkmAdminController extends Controller
                     ->with('ukm', $ukm);
     }
 
-    public function store(Request $request) {
-        // cek apakah request berupa ajax
-        $request->validate([
-            'nim'           => 'required|numeric|unique:ukm_admin,nim',
-            'name'          => 'required|string|max:100',
-            'password'      => 'required|string|min:8',
-            'phone'         => 'required|string|max:20',
-            'email'         => 'required|email|max:100|unique:ukm_admin,email',
-            'ukm_id'        => 'required|exists:ukm,id',
-            'photo_input'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    public function store(Request $request)
+    {
+        if ($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'nim'           => 'required|numeric|unique:ukm_admin,nim',
+                'name'          => 'required|string|max:100',
+                'password'      => 'required|string|min:8',
+                'phone'         => 'required|string|max:20',
+                'email'         => 'required|email|max:100|unique:ukm_admin,email',
+                'ukm_id'        => 'required|exists:ukm,id',
+                'photo_input'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
-        $path = null;
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal!',
+                    'msgField' => $validator->errors()
+                ]);
+            }
 
-        if ($request->hasFile('photo_input')) {
-             // Simpan ke folder storage/app/logos
-            $path = $request->file('photo_input')->store('photos', 'public');
+            $path = null;
+
+            if ($request->hasFile('photo_input')) {
+                $path = $request->file('photo_input')->store('photos', 'public');
+            }
+
+            UkmAdminModel::create([
+                'nim'           => $request->nim,
+                'name'          => $request->name,
+                'password_hash' => bcrypt($request->password),
+                'phone'         => $request->phone,
+                'email'         => $request->email,
+                'ukm_id'        => $request->ukm_id,
+                'photo'         => $path,
+                'is_active'     => true,
+            ]);
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Data user berhasil disimpan'
+            ]);
         }
-        UkmAdminModel::create([
-            'nim' => $request->nim,
-            'name' => $request->name,
-            'password_hash' => bcrypt($request->password),
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'ukm_id' => $request->ukm_id,
-            'photo' => $path,
-            'is_active' => true,
-        ]);
 
-        return response()->json([
-            'status'    =>  true,
-            'message'   =>  'Data user berhasil disimpan'
-        ]);
-
-        redirect('/');
+        return redirect('/');
     }
+
 
     public function show($id) {
         $ukmAdmin = UkmAdminModel::with('ukm')->where('nim', $id)->firstOrFail();

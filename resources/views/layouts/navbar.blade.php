@@ -25,7 +25,7 @@
               <li><a href="{{ url('/ukm') }}" class="dropdown-item">Daftar UKM </a></li>
               <li class="dropdown-divider"></li>
               <li><a href="{{ url('/category') }}" class="dropdown-item">Daftar Kategori UKM </a></li>
-              <li><a href="{{ url('/admin/ukm') }}" class="dropdown-item">Daftar Pengurus UKM </a></li>
+              <li><a href="{{ url('/ukm/admin') }}" class="dropdown-item">Daftar Pengurus UKM </a></li>
 
               {{-- <li class="dropdown-divider"></li> --}}
 

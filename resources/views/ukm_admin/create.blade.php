@@ -14,8 +14,9 @@
                     <label>NIM</label> 
                     <div class="input-group">
                         <input type="text" class="form-control" id="display_nim" value="{{ old('nim') }}" maxlength="20" required oninput="formatNumber(this, 'nim')">
-                        <input type="hidden" name="nim" id="nim" value="{{ old('nim') }}"> 
+                        <input type="hidden" name="nim" id="nim" value="{{ old('nim') }}">
                     </div> 
+                    <span class="text-danger error-text" id="error-nim"></span>
                 </div>
                 <div class="form-group">
                     <label for="name">Nama Pengurus</label>
@@ -92,6 +93,8 @@
                             dataUkmAdmin.ajax.reload(); 
                         }else{ 
                             $('.error-text').text(''); 
+                            
+                            let allErrors = '';
                             $.each(response.msgField, function(prefix, val) { 
                                 $('#error-'+prefix).text(val[0]); 
                             }); 
