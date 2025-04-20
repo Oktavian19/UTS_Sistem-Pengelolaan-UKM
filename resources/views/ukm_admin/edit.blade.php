@@ -10,62 +10,66 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5> 
                     Data yang anda cari tidak ditemukan
                 </div> 
-                <a href="{{ url('/admin/ukm') }}" class="btn btn-warning">Kembali</a> 
+                <a href="{{ url('/ukm/admin') }}" class="btn btn-warning">Kembali</a> 
             </div> 
         </div> 
     </div> 
 @else 
-    <form action="{{ url('/admin/ukm/' . $ukmAdmin->id) }}" method="POST" id="form-edit"> 
+    <form action="{{ url('/ukm/admin/' . $ukmAdmin->nim) }}" method="POST" id="form-edit"> 
         @csrf 
         @method('PUT') 
         <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
             <div class="modal-content"> 
                 <div class="modal-header"> 
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Ukm</h5> 
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Pengurus Ukm</h5> 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
                 </div> 
                 <div class="modal-body"> 
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/' . $ukmAdmin->logo_path) }}" alt="Logo UKM" style="height: 200px; width: 200px;">
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/' . $ukmAdmin->photo) }}" alt="Logo UKM" style="height: 200px; width: 200px;">
                     </div>
                     <div class="form-group">
-                        <label for="name">Nama UKM</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ $ukm->name }}" required>
+                        <label>NIM</label> 
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="display_nim" value="{{ $ukmAdmin->nim }}" maxlength="20" required oninput="formatNumber(this, 'nim')">
+                            <input type="hidden" name="nim" id="nim" value="{{ $ukmAdmin->nim }}"> 
+                        </div> 
                     </div>
                     <div class="form-group">
-                        <label for="description">Deskripsi UKM</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" minlength="50" required>{{ $ukm->description }}</textarea>
+                        <label for="name">Nama Pengurus</label>
+                        <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="100" value="{{ $ukmAdmin->name }}" required>
                     </div>
                     <div class="form-group">
-                        <label>Kategori</label> 
-                        <select name="category_id" id="category_id" class="form-control" required> 
+                        <label for="password">Password</label>
+                        <input value="" type="password" id="password" name="password" class="form-control">
+                        <small class="form-text text-muted">Abaikan jika tidak ingin ubah password</small> 
+                    </div>
+                    <div class="form-group">
+                        <label>Pengurus UKM</label> 
+                        <select name="ukm_id" id="ukm_id" class="form-control" required> 
                             <option value="">- Pilih Kategori -</option> 
-                            @foreach($category as $c) 
-                                <option {{ ($c->id == $ukm->category_id) ? 'selected' : '' }} value="{{ $c->id }}">{{ $c->name }}</option> 
+                            @foreach($ukm as $u) 
+                                <option {{ ($u->id == $ukmAdmin->ukm_id) ? 'selected' : '' }} value="{{ $u->id }}">{{ $u->name }}</option> 
                             @endforeach 
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" maxlength="50" value="{{ $ukm->email }}" required>
+                        <input type="email" name="email" id="email" class="form-control" minlength="3" maxlength="100" value="{{ $ukmAdmin->email }}" required>
                     </div>
                     <div class="form-group">
                         <label>Nomor Telepon</label> 
                         <div class="input-group">
-                            <input type="text" class="form-control" id="display_phone" value="{{ $ukm->phone }}" required oninput="formatNumber(this, 'phone')">
-                            <input type="hidden" name="phone" id="phone" value="{{ $ukm->phone }}"> 
+                            <input type="text" class="form-control" id="display_phone" value="{{ $ukmAdmin->phone }}" minlength="5" maxlength="20" required oninput="formatNumber(this, 'phone')">
+                            <input type="hidden" name="phone" id="phone" value="{{ $ukmAdmin->phone }}"> 
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="website">Website</label>
-                        <input type="url" name="website" id="website" class="form-control" minlength="5" maxlength="50" value="{{ $ukm->website }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="logo_ukm">Logo UKM</label>
+                        <label for="photo_input">Foto Profil</label>
                         <div class="input-group">
                           <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="logo_ukm" name="logo_ukm" accept="image/*">
-                            <label class="custom-file-label" for="logo_ukm">Pilih File</label>
+                            <input type="file" class="custom-file-input" id="photo_input" name="photo_input" accept="image/*">
+                            <label class="custom-file-label" for="photo_input">Pilih File</label>
                           </div>
                         </div>
                     </div>
@@ -77,39 +81,16 @@
             </div>
         </div> 
     </form> 
-<script>
-    function formatNumber(input, hiddenInputId) {
-        // Hapus semua karakter non-digit
-        let value = input.value.replace(/\D/g, '');
-
-        // Simpan nilai integer asli ke hidden input
-        document.getElementById(hiddenInputId).value = value;
-
-        // Format angka dengan spasi setiap 3 digit dari kanan untuk tampilan
-        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
-
-    document.getElementById('logo_ukm').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
-    const errorText = document.getElementById('logoUkmError');
-
-    if (file && file.size > maxSize) {
-        errorText.classList.remove('d-none');
-        e.target.value = ''; // Reset input jika file terlalu besar
-    } else {
-        errorText.classList.add('d-none');
-    }
-});
-    
+<script> 
     $(document).ready(function() { 
         $("#form-edit").validate({ 
             rules: {
-                name: {required: true, maxlength: 150}, 
-                description: {required: true, minlength: 50}, 
-                category_id: {required: true}, 
-                email: {required: true, maxlength: 100},
+                nim: {required: true}, 
+                name: {required: true, maxlength: 50}, 
+                password: {},
                 phone: {required: true, maxlength: 20},
+                email: {required: true, maxlength: 100},
+                ukm_id: {required: true}, 
             },
             submitHandler: function(form) { 
                 let formData = new FormData(form);
@@ -127,7 +108,7 @@
                                 title: 'Berhasil', 
                                 text: response.message 
                             }); 
-                            dataUkm.ajax.reload(); 
+                            dataUkmAdmin.ajax.reload(); 
                         }else{ 
                             $('.error-text').text(''); 
                             $.each(response.msgField, function(prefix, val) { 
@@ -165,5 +146,18 @@
         // Simpan nilai integer asli ke hidden input
         document.getElementById(hiddenInputId).value = value;
     }
+
+    document.getElementById('photo_input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
+        const errorText = document.getElementById('logoUkmError');
+
+        if (file && file.size > maxSize) {
+            errorText.classList.remove('d-none');
+            e.target.value = ''; // Reset input jika file terlalu besar
+        } else {
+            errorText.classList.add('d-none');
+        }
+    });
 </script> 
 @endempty 

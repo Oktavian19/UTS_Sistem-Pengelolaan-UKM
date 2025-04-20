@@ -54,12 +54,12 @@
               <!-- End Level two --> --}}
             </ul>
           </li>
-          <li class="nav-item dropdown">
+          {{-- <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pengguna</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
               <li><a href="{{ url('/admin') }}" class="dropdown-item">Daftar Admin </a></li>
             </ul>
-          </li>
+          </li> --}}
         </ul>
 
         <!-- SEARCH FORM -->

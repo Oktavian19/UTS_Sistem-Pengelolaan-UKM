@@ -11,10 +11,12 @@ class UkmAdminModel extends Model
 
     protected $table = 'ukm_admin';
 
+    protected $primaryKey = 'nim';
+
     protected $fillable = [
         'nim',
         'name',
-        'password',
+        'password_hash',
         'phone',
         'email',
         'ukm_id',
