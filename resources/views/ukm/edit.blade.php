@@ -68,6 +68,7 @@
                             <label class="custom-file-label" for="logo_ukm">Pilih File</label>
                           </div>
                         </div>
+                        <small id="logoUkmError" class="text-danger d-none">Ukuran file melebihi 2MB</small>
                     </div>
                 </div> 
                 <div class="modal-footer"> 
@@ -78,28 +79,24 @@
         </div> 
     </form> 
 <script>
-    function formatNumber(input, hiddenInputId) {
-        // Hapus semua karakter non-digit
-        let value = input.value.replace(/\D/g, '');
-
-        // Simpan nilai integer asli ke hidden input
-        document.getElementById(hiddenInputId).value = value;
-
-        // Format angka dengan spasi setiap 3 digit dari kanan untuk tampilan
-        input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
-
     document.getElementById('logo_ukm').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
-    const errorText = document.getElementById('logoUkmError');
+        const file = e.target.files[0];
+        const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
+        const errorText = document.getElementById('logoUkmError');
+        // Tampilkan preview ke profile-user-img
+        const reader = new FileReader();
 
-    if (file && file.size > maxSize) {
-        errorText.classList.remove('d-none');
-        e.target.value = ''; // Reset input jika file terlalu besar
-    } else {
-        errorText.classList.add('d-none');
-    }
+        if (file && file.size > maxSize) {
+            errorText.classList.remove('d-none');
+            e.target.value = ''; // Reset input jika file terlalu besar
+        } else {
+            errorText.classList.add('d-none');
+            reader.onload = function(e) {
+                const imgPreview = document.querySelector('.profile-user-img');
+                imgPreview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
 });
     
     $(document).ready(function() { 
@@ -154,7 +151,14 @@
             unhighlight: function (element, errorClass, validClass) { 
                 $(element).removeClass('is-invalid'); 
             } 
-        }); 
+        });
+        
+        $('#logo_ukm').on('change', function () {
+            // Ambil nama file yang dipilih
+            var fileName = $(this).val().split('\\').pop();
+            // Update label-nya
+            $(this).next('.custom-file-label').html(fileName);
+        });
     });
 
     function formatNumber(input, hiddenInputId) {

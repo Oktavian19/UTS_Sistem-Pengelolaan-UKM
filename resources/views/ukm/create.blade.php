@@ -41,6 +41,7 @@
                 <div class="form-group">
                     <label for="website">Website</label>
                     <input type="url" name="website" id="website" class="form-control" minlength="5" maxlength="50">
+                    <span></span>
                 </div>
                 <div class="form-group">
                     <label for="logo_ukm">Logo UKM</label>

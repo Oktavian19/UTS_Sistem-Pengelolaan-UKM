@@ -72,6 +72,7 @@
                             <label class="custom-file-label" for="photo_input">Pilih File</label>
                           </div>
                         </div>
+                        <small id="PhotoError" class="text-danger d-none">Ukuran file melebihi 2MB</small>
                     </div>
                 </div> 
                 <div class="modal-footer"> 
@@ -136,6 +137,13 @@
                 $(element).removeClass('is-invalid'); 
             } 
         }); 
+
+        $('#photo_input').on('change', function () {
+            // Ambil nama file yang dipilih
+            var fileName = $(this).val().split('\\').pop();
+            // Update label-nya
+            $(this).next('.custom-file-label').html(fileName);
+        });
     });
 
     function formatNumber(input, hiddenInputId) {
@@ -150,14 +158,22 @@
     document.getElementById('photo_input').addEventListener('change', function(e) {
         const file = e.target.files[0];
         const maxSize = 2 * 1024 * 1024; // 2 MB dalam byte
-        const errorText = document.getElementById('logoUkmError');
+        const errorText = document.getElementById('PhotoError');
+        // Tampilkan preview ke profile-user-img
+        const reader = new FileReader();
 
         if (file && file.size > maxSize) {
             errorText.classList.remove('d-none');
             e.target.value = ''; // Reset input jika file terlalu besar
         } else {
             errorText.classList.add('d-none');
+            reader.onload = function(e) {
+                const imgPreview = document.querySelector('.profile-user-img');
+                imgPreview.src = e.target.result;
+            }
+        reader.readAsDataURL(file);
         }
+        
     });
 </script> 
 @endempty 
