@@ -72,7 +72,7 @@ class UkmController extends Controller
             'logo_ukm'      => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $path = null;
+        $path = 'logo-poltek.png';
 
         if ($request->hasFile('logo_ukm')) {
              // Simpan ke folder storage/app/logos

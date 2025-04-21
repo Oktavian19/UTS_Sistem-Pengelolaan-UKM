@@ -75,7 +75,7 @@ class UkmAdminController extends Controller
                 ]);
             }
 
-            $path = null;
+            $path = 'photos/default.jpg';
 
             if ($request->hasFile('photo_input')) {
                 $path = $request->file('photo_input')->store('photos', 'public');

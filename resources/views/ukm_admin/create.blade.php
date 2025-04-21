@@ -25,6 +25,7 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control" required>
+                    <span class="text-danger error-text" id="error-password"></span>
                 </div>
                 <div class="form-group">
                     <label>Pengurus UKM</label> 
@@ -54,6 +55,7 @@
                         <label class="custom-file-label" for="photo_input">Pilih File</label>
                       </div>
                     </div>
+                    <small id="logoUkmError" class="text-danger d-none">Ukuran file melebihi 2MB</small>
                 </div>
             </div> 
             <div class="modal-footer"> 

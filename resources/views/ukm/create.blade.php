@@ -52,6 +52,7 @@
                       </div>
                     </div>
                 </div>
+                <small id="logoUkmError" class="text-danger d-none">Ukuran file melebihi 2MB</small>
             </div> 
             <div class="modal-footer"> 
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button> 

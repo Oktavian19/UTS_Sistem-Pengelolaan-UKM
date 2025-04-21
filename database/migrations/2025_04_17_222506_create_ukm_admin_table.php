@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('ukm_id')
                   ->constrained('ukm')
                   ->onDelete('cascade');
-            $table->string('photo')->nullable();
+            $table->string('photo')->default('photos/default.jpg');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
