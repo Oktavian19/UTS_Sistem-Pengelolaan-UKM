@@ -86,7 +86,7 @@ class UkmController extends Controller
             'phone' => $request->phone,
             'website' => $request->website,
             'logo_path' => $path,
-            'created_by' => '1', // atau ID admin yang sesuai
+            'created_by' => '1', 
             'is_active' => true,
         ]);
 
@@ -134,10 +134,19 @@ class UkmController extends Controller
                     'msgField' => $validator->errors()  // menunjukkan field mana yang error 
                 ]); 
             }
-    
+        
             $check = UkmModel::findOrFail($id); 
-            if ($check) { 
-                $check->update($request->all()); 
+            if ($check) {
+                $data = $request->only(['name', 'description', 'category_id', 'email', 'phone', 'website']);
+
+                if ($request->hasFile('logo_ukm')) {
+                    // Simpan ke folder storage/app/public/logos
+                    $path = $request->file('logo_ukm')->store('logos', 'public');
+                    $data['logo_path'] = $path;
+                }
+
+                $check->update($data); 
+                
                 return response()->json([ 
                     'status'  => true, 
                     'message' => 'Data berhasil diupdate' 
